@@ -1,0 +1,14 @@
+{
+    "recommendations": [
+        "vscjava.vscode-java-pack",
+        "vmware.vscode-boot-dev-pack",
+        "vscjava.vscode-lombok",
+        "shengchen.vscode-checkstyle",
+        "GitHub.copilot",
+        "redhat.vscode-xml",
+        "Arjun.swagger-viewer",
+        "github.vscode-github-actions",
+        "ms-azuretools.vscode-docker",
+        "editorconfig.editorconfig"
+    ]
+}
