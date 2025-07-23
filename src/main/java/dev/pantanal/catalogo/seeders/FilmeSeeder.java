@@ -1,29 +1,42 @@
 package dev.pantanal.catalogo.seeders;
 
-import dev.pantanal.catalogo.filmes.Filme;
-import dev.pantanal.catalogo.filmes.FilmeRepository;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 import java.util.Arrays;
 
+import dev.pantanal.catalogo.filmes.Filme;
+import dev.pantanal.catalogo.filmes.FilmeRepository;
+import dev.pantanal.catalogo.generos.Genero;
+import dev.pantanal.catalogo.generos.GeneroRepository;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
 @Component
+@Order(2)
 public class FilmeSeeder implements CommandLineRunner {
     private final FilmeRepository filmeRepository;
+    private final GeneroRepository generoRepository;
 
-    public FilmeSeeder(FilmeRepository filmeRepository) {
+    public FilmeSeeder(FilmeRepository filmeRepository, GeneroRepository generoRepository) {
         this.filmeRepository = filmeRepository;
+        this.generoRepository = generoRepository;
     }
 
     @Override
     public void run(String... args) {
         if (filmeRepository.count() == 0) {
+            // Busca os gêneros já persistidos
+            java.util.function.Function<String, Genero> getGenero = nome -> generoRepository.findByNome(nome);
+
             Filme superman = Filme.builder()
                     .titulo("Superman")
                     .diretor("James Gunn")
                     .lancamento(LocalDate.of(2025, 7, 10))
-                    .generos(Arrays.asList("Ação", "Aventura", "Ficção Científica"))
+                    .generos(Arrays.asList(
+                            getGenero.apply("Ação"),
+                            getGenero.apply("Aventura"),
+                            getGenero.apply("Ficção Científica")))
                     .classificacao(14)
                     .duracaoMinutos(129)
                     .elenco(Arrays.asList(
@@ -39,7 +52,10 @@ public class FilmeSeeder implements CommandLineRunner {
                     .titulo("Quarteto Fantástico: Primeiros Passos")
                     .diretor("Matt Shakman")
                     .lancamento(LocalDate.of(2025, 7, 24))
-                    .generos(Arrays.asList("Ação", "Aventura", "Ficção Científica"))
+                    .generos(Arrays.asList(
+                            getGenero.apply("Ação"),
+                            getGenero.apply("Aventura"),
+                            getGenero.apply("Ficção Científica")))
                     .classificacao(12)
                     .duracaoMinutos(115)
                     .elenco(Arrays.asList(

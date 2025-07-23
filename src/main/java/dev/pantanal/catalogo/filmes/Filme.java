@@ -1,20 +1,21 @@
 package dev.pantanal.catalogo.filmes;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import dev.pantanal.catalogo.generos.Genero;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDate;
-import java.util.List;
-import jakarta.persistence.ElementCollection;
-
-import lombok.Builder;
 
 @Entity
 @NoArgsConstructor
@@ -33,14 +34,13 @@ public class Filme {
 
     private LocalDate lancamento;
 
-    @ElementCollection
-    private List<String> generos;
+    @ManyToMany
+    private List<Genero> generos;
 
     private Integer classificacao;
 
     private Integer duracaoMinutos;
 
-    @ElementCollection
     private List<String> elenco;
 
     private String distribuidora;

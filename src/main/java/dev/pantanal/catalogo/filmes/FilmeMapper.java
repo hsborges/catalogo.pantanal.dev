@@ -1,5 +1,9 @@
 package dev.pantanal.catalogo.filmes;
 
+import java.util.stream.Collectors;
+
+import dev.pantanal.catalogo.generos.Genero;
+
 public class FilmeMapper {
 
     public static FilmeDTO toDTO(Filme filme) {
@@ -10,7 +14,9 @@ public class FilmeMapper {
                 .titulo(filme.getTitulo())
                 .diretor(filme.getDiretor())
                 .lancamento(filme.getLancamento())
-                .generos(filme.getGeneros())
+                .generos(filme.getGeneros() != null
+                        ? filme.getGeneros().stream().map(Genero::getNome).collect(Collectors.toList())
+                        : null)
                 .classificacao(filme.getClassificacao())
                 .duracaoMinutos(filme.getDuracaoMinutos())
                 .elenco(filme.getElenco())
@@ -27,7 +33,10 @@ public class FilmeMapper {
                 .titulo(dto.getTitulo())
                 .diretor(dto.getDiretor())
                 .lancamento(dto.getLancamento())
-                .generos(dto.getGeneros())
+                .generos(dto.getGeneros() != null
+                        ? dto.getGeneros().stream().map(nome -> Genero.builder().nome(nome).build())
+                                .collect(Collectors.toList())
+                        : null)
                 .classificacao(dto.getClassificacao())
                 .duracaoMinutos(dto.getDuracaoMinutos())
                 .elenco(dto.getElenco())
@@ -41,7 +50,10 @@ public class FilmeMapper {
         filme.setTitulo(dto.getTitulo());
         filme.setDiretor(dto.getDiretor());
         filme.setLancamento(dto.getLancamento());
-        filme.setGeneros(dto.getGeneros());
+        filme.setGeneros(dto.getGeneros() != null
+                ? dto.getGeneros().stream().map(nome -> Genero.builder().nome(nome).build())
+                        .collect(Collectors.toList())
+                : null);
         filme.setClassificacao(dto.getClassificacao());
         filme.setDuracaoMinutos(dto.getDuracaoMinutos());
         filme.setElenco(dto.getElenco());
