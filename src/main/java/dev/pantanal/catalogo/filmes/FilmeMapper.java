@@ -10,7 +10,7 @@ public class FilmeMapper {
                 .titulo(filme.getTitulo())
                 .diretor(filme.getDiretor())
                 .lancamento(filme.getLancamento())
-                .genero(filme.getGenero())
+                .generos(filme.getGeneros())
                 .classificacao(filme.getClassificacao())
                 .duracaoMinutos(filme.getDuracaoMinutos())
                 .elenco(filme.getElenco())
@@ -27,7 +27,7 @@ public class FilmeMapper {
                 .titulo(dto.getTitulo())
                 .diretor(dto.getDiretor())
                 .lancamento(dto.getLancamento())
-                .genero(dto.getGenero())
+                .generos(dto.getGeneros())
                 .classificacao(dto.getClassificacao())
                 .duracaoMinutos(dto.getDuracaoMinutos())
                 .elenco(dto.getElenco())
@@ -41,7 +41,7 @@ public class FilmeMapper {
         filme.setTitulo(dto.getTitulo());
         filme.setDiretor(dto.getDiretor());
         filme.setLancamento(dto.getLancamento());
-        filme.setGenero(dto.getGenero());
+        filme.setGeneros(dto.getGeneros());
         filme.setClassificacao(dto.getClassificacao());
         filme.setDuracaoMinutos(dto.getDuracaoMinutos());
         filme.setElenco(dto.getElenco());

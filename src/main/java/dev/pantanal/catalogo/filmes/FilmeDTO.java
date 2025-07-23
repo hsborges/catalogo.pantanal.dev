@@ -33,9 +33,9 @@ public class FilmeDTO {
     @NotNull
     private LocalDate lancamento;
 
-    @NotBlank
-    @Size(max = 40)
-    private String genero;
+    @NotNull
+    @Size(min = 1)
+    private List<@NotBlank @Size(max = 40) String> generos;
 
     @NotNull
     @PositiveOrZero

@@ -33,7 +33,8 @@ public class Filme {
 
     private LocalDate lancamento;
 
-    private String genero;
+    @ElementCollection
+    private List<String> generos;
 
     private Integer classificacao;
 

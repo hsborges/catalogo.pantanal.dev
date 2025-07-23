@@ -23,7 +23,7 @@ public class FilmeSeeder implements CommandLineRunner {
                     .titulo("Superman")
                     .diretor("James Gunn")
                     .lancamento(LocalDate.of(2025, 7, 10))
-                    .genero("Ação, Aventura, Ficção Científica")
+                    .generos(Arrays.asList("Ação", "Aventura", "Ficção Científica"))
                     .classificacao(14)
                     .duracaoMinutos(129)
                     .elenco(Arrays.asList(
@@ -39,7 +39,7 @@ public class FilmeSeeder implements CommandLineRunner {
                     .titulo("Quarteto Fantástico: Primeiros Passos")
                     .diretor("Matt Shakman")
                     .lancamento(LocalDate.of(2025, 7, 24))
-                    .genero("Ação, Aventura, Ficção Científica")
+                    .generos(Arrays.asList("Ação", "Aventura", "Ficção Científica"))
                     .classificacao(12)
                     .duracaoMinutos(115)
                     .elenco(Arrays.asList(
