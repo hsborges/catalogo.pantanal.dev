@@ -14,7 +14,10 @@ public class FilmeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FilmeDTO>> listarTodos() {
+    public ResponseEntity<List<FilmeDTO>> listarTodos(@RequestParam(value = "titulo", required = false) String titulo) {
+        if (titulo != null && !titulo.isBlank()) {
+            return ResponseEntity.ok(filmeService.buscarPorTitulo(titulo));
+        }
         return ResponseEntity.ok(filmeService.listarTodos());
     }
 

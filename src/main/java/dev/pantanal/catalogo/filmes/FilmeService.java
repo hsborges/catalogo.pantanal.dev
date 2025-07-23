@@ -1,3 +1,4 @@
+
 package dev.pantanal.catalogo.filmes;
 
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class FilmeService {
+
     private final FilmeRepository filmeRepository;
 
     public FilmeService(FilmeRepository filmeRepository) {
@@ -44,5 +46,11 @@ public class FilmeService {
             return true;
         }
         return false;
+    }
+
+    public List<FilmeDTO> buscarPorTitulo(String nome) {
+        return filmeRepository.findByTituloContainingIgnoreCase(nome).stream()
+                .map(FilmeMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }
