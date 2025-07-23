@@ -1,11 +1,8 @@
-package dev.pantanal.catalogo.seeders;
+package dev.pantanal.catalogo.pessoas;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-
-import dev.pantanal.catalogo.pessoas.Pessoa;
-import dev.pantanal.catalogo.pessoas.PessoaRepository;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;

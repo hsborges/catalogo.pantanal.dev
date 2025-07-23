@@ -1,10 +1,8 @@
-package dev.pantanal.catalogo.seeders;
+package dev.pantanal.catalogo.filmes;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 
-import dev.pantanal.catalogo.filmes.Filme;
-import dev.pantanal.catalogo.filmes.FilmeRepository;
 import dev.pantanal.catalogo.generos.Genero;
 import dev.pantanal.catalogo.generos.GeneroRepository;
 import dev.pantanal.catalogo.pessoas.Pessoa;

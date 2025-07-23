@@ -1,10 +1,7 @@
-package dev.pantanal.catalogo.seeders;
+package dev.pantanal.catalogo.generos;
 
 import java.util.Arrays;
 import java.util.List;
-
-import dev.pantanal.catalogo.generos.Genero;
-import dev.pantanal.catalogo.generos.GeneroRepository;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
