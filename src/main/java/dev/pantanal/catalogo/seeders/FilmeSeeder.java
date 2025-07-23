@@ -7,6 +7,8 @@ import dev.pantanal.catalogo.filmes.Filme;
 import dev.pantanal.catalogo.filmes.FilmeRepository;
 import dev.pantanal.catalogo.generos.Genero;
 import dev.pantanal.catalogo.generos.GeneroRepository;
+import dev.pantanal.catalogo.pessoas.Pessoa;
+import dev.pantanal.catalogo.pessoas.PessoaRepository;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -17,10 +19,13 @@ import org.springframework.stereotype.Component;
 public class FilmeSeeder implements CommandLineRunner {
     private final FilmeRepository filmeRepository;
     private final GeneroRepository generoRepository;
+    private final PessoaRepository pessoaRepository;
 
-    public FilmeSeeder(FilmeRepository filmeRepository, GeneroRepository generoRepository) {
+    public FilmeSeeder(FilmeRepository filmeRepository, GeneroRepository generoRepository,
+            PessoaRepository pessoaRepository) {
         this.filmeRepository = filmeRepository;
         this.generoRepository = generoRepository;
+        this.pessoaRepository = pessoaRepository;
     }
 
     @Override
@@ -29,9 +34,12 @@ public class FilmeSeeder implements CommandLineRunner {
             // Busca os gêneros já persistidos
             java.util.function.Function<String, Genero> getGenero = nome -> generoRepository.findByNome(nome);
 
+            // Busca pessoas do banco
+            java.util.function.Function<String, Pessoa> getPessoa = nome -> pessoaRepository.findByNome(nome);
+
             Filme superman = Filme.builder()
                     .titulo("Superman")
-                    .diretor("James Gunn")
+                    .diretor(getPessoa.apply("James Gunn"))
                     .lancamento(LocalDate.of(2025, 7, 10))
                     .generos(Arrays.asList(
                             getGenero.apply("Ação"),
@@ -40,8 +48,11 @@ public class FilmeSeeder implements CommandLineRunner {
                     .classificacao(14)
                     .duracaoMinutos(129)
                     .elenco(Arrays.asList(
-                            "David Corenswet", "Rachel Brosnahan", "Nicholas Hoult", "Nathan Fillion",
-                            "Isabela Merced"))
+                            getPessoa.apply("David Corenswet"),
+                            getPessoa.apply("Rachel Brosnahan"),
+                            getPessoa.apply("Nicholas Hoult"),
+                            getPessoa.apply("Nathan Fillion"),
+                            getPessoa.apply("Isabela Merced")))
                     .distribuidora("Warner Bros.")
                     .capaUrl(
                             "https://m.media-amazon.com/images/M/MV5BZTk2YjUxODgtMTgxYS00NmQyLTk0OTctNmNhYjZjNTc0NDg1XkEyXkFqcGc@._V1_QL75_UY562_CR1,0,380,562_.jpg")
@@ -50,7 +61,7 @@ public class FilmeSeeder implements CommandLineRunner {
 
             Filme quarteto = Filme.builder()
                     .titulo("Quarteto Fantástico: Primeiros Passos")
-                    .diretor("Matt Shakman")
+                    .diretor(getPessoa.apply("Matt Shakman"))
                     .lancamento(LocalDate.of(2025, 7, 24))
                     .generos(Arrays.asList(
                             getGenero.apply("Ação"),
@@ -59,7 +70,11 @@ public class FilmeSeeder implements CommandLineRunner {
                     .classificacao(12)
                     .duracaoMinutos(115)
                     .elenco(Arrays.asList(
-                            "Pedro Pascal", "Vanessa Kirby", "Ebon Moss-Bachrach", "Joseph Quinn", "Ralph Ineson"))
+                            getPessoa.apply("Pedro Pascal"),
+                            getPessoa.apply("Vanessa Kirby"),
+                            getPessoa.apply("Ebon Moss-Bachrach"),
+                            getPessoa.apply("Joseph Quinn"),
+                            getPessoa.apply("Ralph Ineson")))
                     .distribuidora("Marvel Studios")
                     .capaUrl(
                             "https://m.media-amazon.com/images/M/MV5BYmY3NGMxNjgtMTM1My00OGZhLTg0NzMtNDY1YzFiNTcxNDA5XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg")

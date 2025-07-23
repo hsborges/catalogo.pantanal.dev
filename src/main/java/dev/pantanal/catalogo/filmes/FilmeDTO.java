@@ -3,6 +3,8 @@ package dev.pantanal.catalogo.filmes;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.validation.Valid;
+import dev.pantanal.catalogo.pessoas.PessoaDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -27,9 +29,9 @@ public class FilmeDTO {
     @Size(max = 120)
     private String titulo;
 
-    @NotBlank
-    @Size(max = 80)
-    private String diretor;
+    @Valid
+    @NotNull
+    private PessoaDTO diretor;
 
     @NotNull
     private LocalDate lancamento;
@@ -48,7 +50,7 @@ public class FilmeDTO {
 
     @NotNull
     @Size(min = 1)
-    private List<@NotBlank @Size(max = 80) String> elenco;
+    private List<@Valid PessoaDTO> elenco;
 
     @NotBlank
     @Size(max = 80)

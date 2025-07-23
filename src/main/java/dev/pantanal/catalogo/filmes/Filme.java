@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import dev.pantanal.catalogo.generos.Genero;
+import dev.pantanal.catalogo.pessoas.Pessoa;
+
+import jakarta.persistence.ManyToOne;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +33,8 @@ public class Filme {
 
     private String titulo;
 
-    private String diretor;
+    @ManyToOne
+    private Pessoa diretor;
 
     private LocalDate lancamento;
 
@@ -41,7 +45,8 @@ public class Filme {
 
     private Integer duracaoMinutos;
 
-    private List<String> elenco;
+    @ManyToMany
+    private List<Pessoa> elenco;
 
     private String distribuidora;
 
