@@ -1,84 +1,57 @@
+
 package dev.pantanal.catalogo.filmes;
 
+import dev.pantanal.catalogo.filmes.dto.FilmeCreateDTO;
+
+import dev.pantanal.catalogo.filmes.dto.FilmeDTO;
+import dev.pantanal.catalogo.filmes.dto.FilmeUpdateDTO;
+import dev.pantanal.catalogo.pessoas.PessoaMapper;
+import dev.pantanal.catalogo.pessoas.Pessoa;
+import dev.pantanal.catalogo.generos.Genero;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
+import java.util.List;
 import java.util.stream.Collectors;
 
-import dev.pantanal.catalogo.generos.Genero;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.springframework.beans.factory.annotation.Autowired;
+@Mapper(componentModel = "spring", uses = { PessoaMapper.class })
+public interface FilmeMapper {
 
-import dev.pantanal.catalogo.pessoas.PessoaMapper;
-
-@Mapper(componentModel = "spring")
-public abstract class FilmeMapper {
-
-    @Autowired
-    protected PessoaMapper pessoaMapper;
-
-    public FilmeDTO toDTO(Filme filme) {
-        if (filme == null)
-            return null;
-        return FilmeDTO.builder()
-                .id(filme.getId())
-                .titulo(filme.getTitulo())
-                .diretor(pessoaMapper.toDTO(filme.getDiretor()))
-                .lancamento(filme.getLancamento())
-                .generos(filme.getGeneros() != null
-                        ? filme.getGeneros().stream().map(Genero::getNome)
-                                .collect(Collectors.toList())
-                        : null)
-                .classificacao(filme.getClassificacao())
-                .duracaoMinutos(filme.getDuracaoMinutos())
-                .elenco(filme.getElenco() != null
-                        ? filme.getElenco().stream().map(pessoaMapper::toDTO)
-                                .collect(Collectors.toList())
-                        : null)
-                .distribuidora(filme.getDistribuidora())
-                .capaUrl(filme.getCapaUrl())
-                .trailerUrl(filme.getTrailerUrl())
-                .build();
+    @Named("idsToGeneros")
+    static List<Genero> idsToGeneros(List<Long> ids) {
+        return ids == null ? null
+                : ids.stream().map(id -> Genero.builder().id(id).build()).collect(Collectors.toList());
     }
 
-    public Filme toEntity(FilmeDTO dto) {
-        if (dto == null)
-            return null;
-        return Filme.builder()
-                .titulo(dto.getTitulo())
-                .diretor(pessoaMapper.toEntity(dto.getDiretor()))
-                .lancamento(dto.getLancamento())
-                .generos(dto.getGeneros() != null
-                        ? dto.getGeneros().stream()
-                                .map(nome -> Genero.builder().nome(nome).build())
-                                .collect(Collectors.toList())
-                        : null)
-                .classificacao(dto.getClassificacao())
-                .duracaoMinutos(dto.getDuracaoMinutos())
-                .elenco(dto.getElenco() != null
-                        ? dto.getElenco().stream().map(pessoaMapper::toEntity)
-                                .collect(Collectors.toList())
-                        : null)
-                .distribuidora(dto.getDistribuidora())
-                .capaUrl(dto.getCapaUrl())
-                .trailerUrl(dto.getTrailerUrl())
-                .build();
+    @Named("idToPessoa")
+    static Pessoa idToPessoa(Long id) {
+        return id == null ? null : Pessoa.builder().id(id).build();
     }
 
-    public void updateEntity(@MappingTarget Filme filme, FilmeDTO dto) {
-        filme.setTitulo(dto.getTitulo());
-        filme.setDiretor(pessoaMapper.toEntity(dto.getDiretor()));
-        filme.setLancamento(dto.getLancamento());
-        filme.setGeneros(dto.getGeneros() != null
-                ? dto.getGeneros().stream().map(nome -> Genero.builder().nome(nome).build())
-                        .collect(Collectors.toList())
-                : null);
-        filme.setClassificacao(dto.getClassificacao());
-        filme.setDuracaoMinutos(dto.getDuracaoMinutos());
-        filme.setElenco(dto.getElenco() != null
-                ? dto.getElenco().stream().map(pessoaMapper::toEntity).collect(Collectors.toList())
-                : null);
-        filme.setDistribuidora(dto.getDistribuidora());
-        filme.setCapaUrl(dto.getCapaUrl());
-        filme.setTrailerUrl(dto.getTrailerUrl());
+    @Named("idsToPessoas")
+    static List<Pessoa> idsToPessoas(List<Long> ids) {
+        return ids == null ? null
+                : ids.stream().map(id -> Pessoa.builder().id(id).build()).collect(Collectors.toList());
     }
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "generos", source = "generos", qualifiedByName = "idsToGeneros")
+    @Mapping(target = "diretor", source = "diretor", qualifiedByName = "idToPessoa")
+    @Mapping(target = "elenco", source = "elenco", qualifiedByName = "idsToPessoas")
+    Filme fromCreateDTO(FilmeCreateDTO dto);
+
+    FilmeDTO toDTO(Filme filme);
+
+    Filme toEntity(FilmeDTO dto);
+
+    void updateEntity(@MappingTarget Filme filme, FilmeDTO dto);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "generos", source = "generos", qualifiedByName = "idsToGeneros")
+    @Mapping(target = "diretor", source = "diretor", qualifiedByName = "idToPessoa")
+    @Mapping(target = "elenco", source = "elenco", qualifiedByName = "idsToPessoas")
+    void updateEntity(@MappingTarget Filme filme, FilmeUpdateDTO dto);
 
 }

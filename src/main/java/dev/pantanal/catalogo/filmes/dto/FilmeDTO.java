@@ -1,7 +1,11 @@
-package dev.pantanal.catalogo.filmes;
+package dev.pantanal.catalogo.filmes.dto;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+
+import dev.pantanal.catalogo.generos.Genero;
 
 import dev.pantanal.catalogo.pessoas.dto.PessoaDTO;
 import jakarta.validation.Valid;
@@ -31,6 +35,7 @@ public class FilmeDTO {
 
     @Valid
     @NotNull
+    @JsonIncludeProperties({ "id", "nome" })
     private PessoaDTO diretor;
 
     @NotNull
@@ -38,7 +43,8 @@ public class FilmeDTO {
 
     @NotNull
     @Size(min = 1)
-    private List<@NotBlank @Size(max = 40) String> generos;
+    @JsonIncludeProperties({ "id", "nome" })
+    private List<@Valid Genero> generos;
 
     @NotNull
     @PositiveOrZero
@@ -50,6 +56,7 @@ public class FilmeDTO {
 
     @NotNull
     @Size(min = 1)
+    @JsonIncludeProperties({ "id", "nome" })
     private List<@Valid PessoaDTO> elenco;
 
     @NotBlank

@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.pantanal.catalogo.filmes.dto.FilmeDTO;
+import dev.pantanal.catalogo.filmes.dto.FilmeCreateDTO;
+import dev.pantanal.catalogo.filmes.dto.FilmeUpdateDTO;
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/filmes")
 public class FilmeController {
@@ -38,13 +43,13 @@ public class FilmeController {
     }
 
     @PostMapping
-    public ResponseEntity<FilmeDTO> criar(@RequestBody FilmeDTO dto) {
+    public ResponseEntity<FilmeDTO> criar(@Valid @RequestBody FilmeCreateDTO dto) {
         FilmeDTO criado = filmeService.criar(dto);
         return ResponseEntity.ok(criado);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FilmeDTO> atualizar(@PathVariable Long id, @RequestBody FilmeDTO dto) {
+    public ResponseEntity<FilmeDTO> atualizar(@PathVariable Long id, @Valid @RequestBody FilmeUpdateDTO dto) {
         return filmeService.atualizar(id, dto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

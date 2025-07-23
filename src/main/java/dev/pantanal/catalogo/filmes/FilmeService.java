@@ -8,6 +8,10 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import dev.pantanal.catalogo.filmes.dto.FilmeDTO;
+import dev.pantanal.catalogo.filmes.dto.FilmeUpdateDTO;
+import dev.pantanal.catalogo.filmes.dto.FilmeCreateDTO;
+
 @Service
 @Transactional
 public class FilmeService {
@@ -30,12 +34,12 @@ public class FilmeService {
         return filmeRepository.findById(id).map(filmeMapper::toDTO);
     }
 
-    public FilmeDTO criar(FilmeDTO dto) {
-        Filme filme = filmeMapper.toEntity(dto);
+    public FilmeDTO criar(FilmeCreateDTO dto) {
+        Filme filme = filmeMapper.fromCreateDTO(dto);
         return filmeMapper.toDTO(filmeRepository.save(filme));
     }
 
-    public Optional<FilmeDTO> atualizar(Long id, FilmeDTO dto) {
+    public Optional<FilmeDTO> atualizar(Long id, FilmeUpdateDTO dto) {
         return filmeRepository.findById(id).map(filme -> {
             filmeMapper.updateEntity(filme, dto);
             return filmeMapper.toDTO(filmeRepository.save(filme));
