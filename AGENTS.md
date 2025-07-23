@@ -51,6 +51,7 @@ Ex: /api/atores/{id}
 - Use construtores para injeção de dependência, facilitando a testabilidade
 - Adote mapeadores internos (ex: MapStruct ou classes *Mapper) para converter entre entidades e DTOs
 - Use contratos de interface entre camadas para manter baixo acoplamento
+- Use lombook para gerar construtores e getters/setters padrões
 
 ## Security
 
