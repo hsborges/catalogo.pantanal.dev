@@ -1,8 +1,9 @@
-package dev.pantanal.catalogo.pessoas;
+package dev.pantanal.catalogo.pessoas.dto;
 
 import java.time.LocalDate;
 
-import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
+
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -20,16 +21,15 @@ import lombok.Setter;
 public class PessoaDTO {
     private Long id;
 
-    @NotBlank
-    @Size(max = 80)
+    @Size(min = 1, max = 80)
     private String nome;
 
     @NotNull
     private LocalDate dataNascimento;
 
-    @Size(max = 1000)
+    @Size(min = 1, max = 2000)
     private String biografia;
 
-    @Size(max = 255)
+    @URL
     private String fotoUrl;
 }

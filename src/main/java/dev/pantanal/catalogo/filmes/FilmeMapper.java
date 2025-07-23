@@ -3,17 +3,25 @@ package dev.pantanal.catalogo.filmes;
 import java.util.stream.Collectors;
 
 import dev.pantanal.catalogo.generos.Genero;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import dev.pantanal.catalogo.pessoas.PessoaMapper;
 
-public class FilmeMapper {
+@Mapper(componentModel = "spring")
+public abstract class FilmeMapper {
 
-    public static FilmeDTO toDTO(Filme filme) {
+    @Autowired
+    protected PessoaMapper pessoaMapper;
+
+    public FilmeDTO toDTO(Filme filme) {
         if (filme == null)
             return null;
         return FilmeDTO.builder()
                 .id(filme.getId())
                 .titulo(filme.getTitulo())
-                .diretor(PessoaMapper.toDTO(filme.getDiretor()))
+                .diretor(pessoaMapper.toDTO(filme.getDiretor()))
                 .lancamento(filme.getLancamento())
                 .generos(filme.getGeneros() != null
                         ? filme.getGeneros().stream().map(Genero::getNome)
@@ -22,7 +30,7 @@ public class FilmeMapper {
                 .classificacao(filme.getClassificacao())
                 .duracaoMinutos(filme.getDuracaoMinutos())
                 .elenco(filme.getElenco() != null
-                        ? filme.getElenco().stream().map(PessoaMapper::toDTO)
+                        ? filme.getElenco().stream().map(pessoaMapper::toDTO)
                                 .collect(Collectors.toList())
                         : null)
                 .distribuidora(filme.getDistribuidora())
@@ -31,12 +39,12 @@ public class FilmeMapper {
                 .build();
     }
 
-    public static Filme toEntity(FilmeDTO dto) {
+    public Filme toEntity(FilmeDTO dto) {
         if (dto == null)
             return null;
         return Filme.builder()
                 .titulo(dto.getTitulo())
-                .diretor(PessoaMapper.toEntity(dto.getDiretor()))
+                .diretor(pessoaMapper.toEntity(dto.getDiretor()))
                 .lancamento(dto.getLancamento())
                 .generos(dto.getGeneros() != null
                         ? dto.getGeneros().stream()
@@ -46,7 +54,7 @@ public class FilmeMapper {
                 .classificacao(dto.getClassificacao())
                 .duracaoMinutos(dto.getDuracaoMinutos())
                 .elenco(dto.getElenco() != null
-                        ? dto.getElenco().stream().map(PessoaMapper::toEntity)
+                        ? dto.getElenco().stream().map(pessoaMapper::toEntity)
                                 .collect(Collectors.toList())
                         : null)
                 .distribuidora(dto.getDistribuidora())
@@ -55,9 +63,9 @@ public class FilmeMapper {
                 .build();
     }
 
-    public static void updateEntity(Filme filme, FilmeDTO dto) {
+    public void updateEntity(@MappingTarget Filme filme, FilmeDTO dto) {
         filme.setTitulo(dto.getTitulo());
-        filme.setDiretor(PessoaMapper.toEntity(dto.getDiretor()));
+        filme.setDiretor(pessoaMapper.toEntity(dto.getDiretor()));
         filme.setLancamento(dto.getLancamento());
         filme.setGeneros(dto.getGeneros() != null
                 ? dto.getGeneros().stream().map(nome -> Genero.builder().nome(nome).build())
@@ -66,7 +74,7 @@ public class FilmeMapper {
         filme.setClassificacao(dto.getClassificacao());
         filme.setDuracaoMinutos(dto.getDuracaoMinutos());
         filme.setElenco(dto.getElenco() != null
-                ? dto.getElenco().stream().map(PessoaMapper::toEntity).collect(Collectors.toList())
+                ? dto.getElenco().stream().map(pessoaMapper::toEntity).collect(Collectors.toList())
                 : null);
         filme.setDistribuidora(dto.getDistribuidora());
         filme.setCapaUrl(dto.getCapaUrl());

@@ -1,34 +1,26 @@
 package dev.pantanal.catalogo.pessoas;
 
-public class PessoaMapper {
-    public static PessoaDTO toDTO(Pessoa pessoa) {
-        if (pessoa == null)
-            return null;
-        return PessoaDTO.builder()
-                .id(pessoa.getId())
-                .nome(pessoa.getNome())
-                .dataNascimento(pessoa.getDataNascimento())
-                .biografia(pessoa.getBiografia())
-                .fotoUrl(pessoa.getFotoUrl())
-                .build();
-    }
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
-    public static Pessoa toEntity(PessoaDTO dto) {
-        if (dto == null)
-            return null;
-        return Pessoa.builder()
-                .id(dto.getId())
-                .nome(dto.getNome())
-                .dataNascimento(dto.getDataNascimento())
-                .biografia(dto.getBiografia())
-                .fotoUrl(dto.getFotoUrl())
-                .build();
-    }
+import dev.pantanal.catalogo.pessoas.dto.PessoaDTO;
+import dev.pantanal.catalogo.pessoas.dto.PessoaCreateDTO;
+import dev.pantanal.catalogo.pessoas.dto.PessoaUpdateDTO;
 
-    public static void updateEntity(Pessoa pessoa, PessoaDTO dto) {
-        pessoa.setNome(dto.getNome());
-        pessoa.setDataNascimento(dto.getDataNascimento());
-        pessoa.setBiografia(dto.getBiografia());
-        pessoa.setFotoUrl(dto.getFotoUrl());
-    }
+@Mapper(componentModel = "spring")
+public interface PessoaMapper {
+    PessoaDTO toDTO(Pessoa pessoa);
+
+    @Mapping(target = "id", ignore = true)
+    Pessoa toEntity(PessoaDTO dto);
+
+    @Mapping(target = "id", ignore = true)
+    Pessoa toEntity(PessoaCreateDTO dto);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "id", ignore = true)
+    void updateEntity(@MappingTarget Pessoa pessoa, PessoaUpdateDTO dto);
 }

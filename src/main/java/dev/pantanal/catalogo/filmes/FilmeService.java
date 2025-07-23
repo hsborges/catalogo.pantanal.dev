@@ -13,30 +13,32 @@ import org.springframework.transaction.annotation.Transactional;
 public class FilmeService {
 
     private final FilmeRepository filmeRepository;
+    private final FilmeMapper filmeMapper;
 
-    public FilmeService(FilmeRepository filmeRepository) {
+    public FilmeService(FilmeRepository filmeRepository, FilmeMapper filmeMapper) {
         this.filmeRepository = filmeRepository;
+        this.filmeMapper = filmeMapper;
     }
 
     public List<FilmeDTO> listarTodos() {
         return filmeRepository.findAll().stream()
-                .map(FilmeMapper::toDTO)
+                .map(filmeMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     public Optional<FilmeDTO> buscarPorId(Long id) {
-        return filmeRepository.findById(id).map(FilmeMapper::toDTO);
+        return filmeRepository.findById(id).map(filmeMapper::toDTO);
     }
 
     public FilmeDTO criar(FilmeDTO dto) {
-        Filme filme = FilmeMapper.toEntity(dto);
-        return FilmeMapper.toDTO(filmeRepository.save(filme));
+        Filme filme = filmeMapper.toEntity(dto);
+        return filmeMapper.toDTO(filmeRepository.save(filme));
     }
 
     public Optional<FilmeDTO> atualizar(Long id, FilmeDTO dto) {
         return filmeRepository.findById(id).map(filme -> {
-            FilmeMapper.updateEntity(filme, dto);
-            return FilmeMapper.toDTO(filmeRepository.save(filme));
+            filmeMapper.updateEntity(filme, dto);
+            return filmeMapper.toDTO(filmeRepository.save(filme));
         });
     }
 
@@ -50,7 +52,7 @@ public class FilmeService {
 
     public List<FilmeDTO> buscarPorTitulo(String nome) {
         return filmeRepository.findByTituloContainingIgnoreCase(nome).stream()
-                .map(FilmeMapper::toDTO)
+                .map(filmeMapper::toDTO)
                 .collect(Collectors.toList());
     }
 }

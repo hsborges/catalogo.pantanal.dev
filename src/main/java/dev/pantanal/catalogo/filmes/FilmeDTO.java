@@ -3,8 +3,8 @@ package dev.pantanal.catalogo.filmes;
 import java.time.LocalDate;
 import java.util.List;
 
+import dev.pantanal.catalogo.pessoas.dto.PessoaDTO;
 import jakarta.validation.Valid;
-import dev.pantanal.catalogo.pessoas.PessoaDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

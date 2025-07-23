@@ -1,5 +1,8 @@
 package dev.pantanal.catalogo.pessoas;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -7,34 +10,42 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import dev.pantanal.catalogo.pessoas.dto.PessoaDTO;
+import dev.pantanal.catalogo.pessoas.dto.PessoaCreateDTO;
+import dev.pantanal.catalogo.pessoas.dto.PessoaUpdateDTO;
+
 @Service
 @Transactional
 public class PessoaService {
     private final PessoaRepository pessoaRepository;
+    private final PessoaMapper pessoaMapper;
 
-    public PessoaService(PessoaRepository pessoaRepository) {
+    public PessoaService(PessoaRepository pessoaRepository, PessoaMapper pessoaMapper) {
         this.pessoaRepository = pessoaRepository;
+        this.pessoaMapper = pessoaMapper;
     }
 
-    public List<PessoaDTO> listarTodos() {
-        return pessoaRepository.findAll().stream()
-                .map(PessoaMapper::toDTO)
-                .collect(Collectors.toList());
+    public PessoaDTO criar(PessoaCreateDTO dto) {
+        Pessoa pessoa = pessoaMapper.toEntity(dto);
+        return pessoaMapper.toDTO(pessoaRepository.save(pessoa));
+    }
+
+    public Page<PessoaDTO> listarTodos(Pageable pageable) {
+        return pessoaRepository.findAll(pageable).map(pessoaMapper::toDTO);
+    }
+
+    public Page<PessoaDTO> buscarPorNomeIgnoreCase(String nome, Pageable pageable) {
+        return pessoaRepository.findByNomeContainingIgnoreCase(nome, pageable).map(pessoaMapper::toDTO);
     }
 
     public Optional<PessoaDTO> buscarPorId(Long id) {
-        return pessoaRepository.findById(id).map(PessoaMapper::toDTO);
+        return pessoaRepository.findById(id).map(pessoaMapper::toDTO);
     }
 
-    public PessoaDTO criar(PessoaDTO dto) {
-        Pessoa pessoa = PessoaMapper.toEntity(dto);
-        return PessoaMapper.toDTO(pessoaRepository.save(pessoa));
-    }
-
-    public Optional<PessoaDTO> atualizar(Long id, PessoaDTO dto) {
+    public Optional<PessoaDTO> atualizar(Long id, PessoaUpdateDTO dto) {
         return pessoaRepository.findById(id).map(pessoa -> {
-            PessoaMapper.updateEntity(pessoa, dto);
-            return PessoaMapper.toDTO(pessoaRepository.save(pessoa));
+            pessoaMapper.updateEntity(pessoa, dto);
+            return pessoaMapper.toDTO(pessoaRepository.save(pessoa));
         });
     }
 
@@ -48,6 +59,6 @@ public class PessoaService {
 
     public PessoaDTO buscarPorNomeIgnoreCase(String nome) {
         Pessoa pessoa = pessoaRepository.findByNome(nome);
-        return pessoa != null ? PessoaMapper.toDTO(pessoa) : null;
+        return pessoa != null ? pessoaMapper.toDTO(pessoa) : null;
     }
 }

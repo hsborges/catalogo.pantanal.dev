@@ -1,8 +1,10 @@
 package dev.pantanal.catalogo.pessoas;
 
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.pantanal.catalogo.pessoas.dto.PessoaDTO;
+import dev.pantanal.catalogo.pessoas.dto.PessoaListParamsDTO;
+import dev.pantanal.catalogo.pessoas.dto.PessoaCreateDTO;
+import dev.pantanal.catalogo.pessoas.dto.PessoaUpdateDTO;
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/pessoas")
 public class PessoaController {
@@ -24,16 +32,21 @@ public class PessoaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PessoaDTO>> listarTodos(@RequestParam(value = "nome", required = false) String nome) {
-        if (nome != null && !nome.isBlank()) {
-            PessoaDTO pessoa = pessoaService.buscarPorNomeIgnoreCase(nome);
-            if (pessoa != null) {
-                return ResponseEntity.ok(List.of(pessoa));
-            } else {
-                return ResponseEntity.ok(List.of());
-            }
+    public ResponseEntity<Iterable<PessoaDTO>> listarTodos(@Valid @ModelAttribute PessoaListParamsDTO params) {
+        Pageable pageable = PageRequest.of(params.getPage(), params.getSize());
+        Page<PessoaDTO> resultPage;
+        if (params.getNome() != null && !params.getNome().isBlank()) {
+            resultPage = pessoaService.buscarPorNomeIgnoreCase(params.getNome(), pageable);
+        } else {
+            resultPage = pessoaService.listarTodos(pageable);
         }
-        return ResponseEntity.ok(pessoaService.listarTodos());
+
+        return ResponseEntity.ok()
+                .header("X-Total-Count", String.valueOf(resultPage.getTotalElements()))
+                .header("X-Total-Pages", String.valueOf(resultPage.getTotalPages()))
+                .header("X-Page-Number", String.valueOf(resultPage.getNumber()))
+                .header("X-Page-Size", String.valueOf(resultPage.getSize()))
+                .body(resultPage.getContent());
     }
 
     @GetMapping("/{id}")
@@ -44,13 +57,13 @@ public class PessoaController {
     }
 
     @PostMapping
-    public ResponseEntity<PessoaDTO> criar(@RequestBody PessoaDTO dto) {
+    public ResponseEntity<PessoaDTO> criar(@Valid @RequestBody PessoaCreateDTO dto) {
         PessoaDTO criado = pessoaService.criar(dto);
         return ResponseEntity.ok(criado);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PessoaDTO> atualizar(@PathVariable Long id, @RequestBody PessoaDTO dto) {
+    public ResponseEntity<PessoaDTO> atualizar(@PathVariable Long id, @Valid @RequestBody PessoaUpdateDTO dto) {
         return pessoaService.atualizar(id, dto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
