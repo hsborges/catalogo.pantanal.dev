@@ -1,4 +1,4 @@
-package dev.pantanal.catalogo.filme;
+package dev.pantanal.catalogo.filmes;
 
 public class FilmeMapper {
 

@@ -1,4 +1,4 @@
-package dev.pantanal.catalogo.filme;
+package dev.pantanal.catalogo.filmes;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

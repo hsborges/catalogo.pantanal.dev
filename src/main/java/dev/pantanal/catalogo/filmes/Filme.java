@@ -1,4 +1,4 @@
-package dev.pantanal.catalogo.filme;
+package dev.pantanal.catalogo.filmes;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
