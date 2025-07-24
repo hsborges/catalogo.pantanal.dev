@@ -9,6 +9,7 @@
         "Arjun.swagger-viewer",
         "github.vscode-github-actions",
         "ms-azuretools.vscode-docker",
-        "editorconfig.editorconfig"
+        "editorconfig.editorconfig",
+        "redhat.fabric8-analytics"
     ]
 }
