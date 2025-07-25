@@ -5,7 +5,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,7 +60,7 @@ public class PessoaController {
     @PostMapping
     public ResponseEntity<PessoaDTO> criar(@Valid @RequestBody PessoaCreateDTO dto) {
         PessoaDTO criado = pessoaService.criar(dto);
-        return ResponseEntity.ok(criado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(criado);
     }
 
     @PutMapping("/{id}")

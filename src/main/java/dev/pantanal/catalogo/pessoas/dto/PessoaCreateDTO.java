@@ -10,12 +10,14 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 public class PessoaCreateDTO {
+    @NotNull(message = "Nome é obrigatório")
     @Size(min = 1, max = 80, message = "Nome é obrigatório")
     private String nome;
 
     @NotNull(message = "Data de nascimento é obrigatória")
     private LocalDate dataNascimento;
 
+    @NotNull(message = "Biografia é obrigatória")
     @Size(min = 1, max = 2000, message = "Biografia deve ter no máximo 2000 caracteres")
     private String biografia;
 
