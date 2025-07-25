@@ -2,6 +2,7 @@ package dev.pantanal.catalogo.generos;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/generos")
@@ -35,7 +38,7 @@ public class GeneroController {
     }
 
     @PostMapping
-    public ResponseEntity<GeneroDTO> criar(@RequestBody GeneroDTO dto) {
+    public ResponseEntity<GeneroDTO> criar(@Valid @RequestBody GeneroDTO dto) {
         if (dto.getNome() == null || dto.getNome().isBlank()) {
             return ResponseEntity.badRequest().build();
         }
@@ -43,7 +46,7 @@ public class GeneroController {
             return ResponseEntity.status(409).build();
         }
         GeneroDTO salvo = generoService.criar(dto);
-        return ResponseEntity.ok(salvo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
     }
 
     @PutMapping("/{id}")
