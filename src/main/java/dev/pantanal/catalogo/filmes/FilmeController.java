@@ -2,6 +2,7 @@ package dev.pantanal.catalogo.filmes;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +46,7 @@ public class FilmeController {
     @PostMapping
     public ResponseEntity<FilmeDTO> criar(@Valid @RequestBody FilmeCreateDTO dto) {
         FilmeDTO criado = filmeService.criar(dto);
-        return ResponseEntity.ok(criado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(criado);
     }
 
     @PutMapping("/{id}")
