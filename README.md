@@ -48,6 +48,22 @@ cd catalogo.pantanal.dev
 ./mvnw test jacoco:report
 ```
 
+## 🐳 Imagem Docker
+
+Imagens são publicadas no GitHub Container Registry (GHCR) via workflow CD:
+
+- Registro: `ghcr.io/hsborges/catalogo.pantanal.dev`
+- Tags:
+	- `latest` para a branch `main`
+	- `vX.Y.Z` para tags de release
+	- `sha-<commit>` para commits
+
+Executar localmente (após publicar ou build local):
+
+```bash
+docker run --rm -p 8080:8080 ghcr.io/hsborges/catalogo.pantanal.dev:latest
+```
+
 ## ⚙️ Configuration
 
 ### Configuração de ambiente
