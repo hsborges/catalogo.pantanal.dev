@@ -1,5 +1,6 @@
 # Cinema (Catálogo) <pantanal.dev>
 
+![CI](https://github.com/hsborges/catalogo.pantanal.dev/actions/workflows/ci.yml/badge.svg)
 ![Java](https://img.shields.io/badge/Java-17-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.3-green)
 ![Maven](https://img.shields.io/badge/Maven-3.6+-blue)
